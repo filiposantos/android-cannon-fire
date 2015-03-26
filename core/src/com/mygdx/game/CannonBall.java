@@ -9,9 +9,11 @@ public class CannonBall {
 
 	private float SHOT_VEL;
 
-	private float size;
+	public float size;
 
-	private Vector2 startPos, pos, startVel;
+	private Vector2 startPos, startVel;
+	public Vector2 pos;
+
 	private float t;
 
 	private boolean isMoving;
@@ -19,28 +21,38 @@ public class CannonBall {
 	private Texture cannonBall;
 
 	public CannonBall(float size, Vector2 startPos) {
-		SHOT_VEL = Gdx.graphics.getWidth();
+		SHOT_VEL = Gdx.graphics.getWidth() * 1.3f;
 
 		this.size = size;
 
 		this.startPos = startPos;
-		pos = new Vector2(startPos);
-		startVel = new Vector2();
+		this.startPos.x -= size / 2;
 
-		isMoving = false;
+		restart();
 
 		cannonBall = new Texture("img/cannonball.png");
 	}
 
-	public void update() {
-		float elapsedTime = Gdx.graphics.getDeltaTime();
-		t += elapsedTime;
-
+	/**
+	 * @return <code>true</code> if ball fell off screen
+	 */
+	public boolean update() {
 		if (isMoving) {
+			float elapsedTime = Gdx.graphics.getDeltaTime();
+			t += elapsedTime;
+
 			pos.x = startPos.x + startVel.x * t;
 			pos.y = startPos.y + startVel.y * t + 0.5f * MyGdxGame.GRAVITY * t
 					* t;
+
+			if (pos.x + size < 0 || pos.y + size < 0
+					|| pos.x > Gdx.graphics.getWidth()) {
+				restart();
+				return true;
+			}
 		}
+
+		return false;
 	}
 
 	public void draw(SpriteBatch batch) {
@@ -48,12 +60,21 @@ public class CannonBall {
 	}
 
 	public void fire(float shotAngle) {
-		startVel = new Vector2((float) (SHOT_VEL * Math.cos(shotAngle)),
-				(float) (SHOT_VEL * Math.sin(shotAngle)));
+		if (!isMoving) {
+			startVel = new Vector2((float) (SHOT_VEL * Math.cos(shotAngle)),
+					(float) (SHOT_VEL * Math.sin(shotAngle)));
 
-		t = 0;
+			t = 0;
 
-		isMoving = true;
+			isMoving = true;
+		}
+	}
+
+	public void restart() {
+		pos = new Vector2(startPos);
+		startVel = new Vector2();
+
+		isMoving = false;
 	}
 
 }

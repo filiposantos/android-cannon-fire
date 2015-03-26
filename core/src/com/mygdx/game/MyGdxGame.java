@@ -33,6 +33,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 	private float cannonWidth, cannonHeight, cannonOrigin, cannonAngle;
 
 	private CannonBall ball;
+	private Target target;
 
 	private Touch touch;
 
@@ -65,6 +66,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 
 		ball = new CannonBall(cannonHeight * 0.2f, new Vector2(cannonOrigin,
 				cannonOrigin));
+		target = new Target(ball.size);
 
 		touch = new Touch();
 	}
@@ -83,10 +85,16 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 							/ touch.x);
 		}
 
-		ball.update();
+		if (ball.update())
+			score = 0;
+
+		if (target.hit(ball))
+			score++;
 
 		// draw
 		batch.begin();
+
+		target.draw(batch);
 
 		ball.draw(batch);
 
@@ -141,8 +149,6 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 		touch.touched = true;
 
 		ball.fire(cannonAngle);
-
-		score++;
 
 		return true;
 	}
