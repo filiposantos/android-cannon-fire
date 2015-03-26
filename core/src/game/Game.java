@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package game;
 
 import utils.Touch;
 
@@ -15,7 +15,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFont
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
-public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
+public class Game extends ApplicationAdapter implements InputProcessor {
 
 	public static float GRAVITY;
 

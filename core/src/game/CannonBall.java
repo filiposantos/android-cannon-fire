@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -42,8 +42,7 @@ public class CannonBall {
 			t += elapsedTime;
 
 			pos.x = startPos.x + startVel.x * t;
-			pos.y = startPos.y + startVel.y * t + 0.5f * MyGdxGame.GRAVITY * t
-					* t;
+			pos.y = startPos.y + startVel.y * t + 0.5f * Game.GRAVITY * t * t;
 
 			if (pos.x + size < 0 || pos.y + size < 0
 					|| pos.x > Gdx.graphics.getWidth()) {
